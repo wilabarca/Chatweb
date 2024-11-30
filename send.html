@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
+</head>
+<body>
+    <h1>Mensajes</h1>
+
+    <div id="messageContainer" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
+        <p><em>No hay mensajes</em></p>
+    </div>
+
+    <!-- Formulario para enviar mensajes -->
+    <form id="messageForm">
+        <input type="text" id="messageInput" placeholder="Escribe un mensaje" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        // Conexión WebSocket
+        const socket = new WebSocket("ws://localhost:8080");
+
+        const messageContainer = document.getElementById("messageContainer");
+        const messageForm = document.getElementById("messageForm");
+        const messageInput = document.getElementById("messageInput");
+
+        // Conectar al WebSocket
+        socket.onopen = function() {
+            console.log("Cliente conectado");
+            displayMessage("Conectado al servidor WebSocket");
+        };
+
+        // Manejar mensajes recibidos del servidor
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+
+            // Si es un historial de mensajes
+            if (data.type === 'history') {
+                messageContainer.innerHTML = ''; // Limpiar mensajes anteriores
+                data.messages.forEach(msg => {
+                    displayMessage(`${msg.message}`);
+                });
+            }
+
+            // Si es un nuevo mensaje
+            if (data.type === 'new_message') {
+                displayMessage(`Nuevo mensaje: ${data.message}`);
+            }
+        };
+
+        // Manejar errores
+        socket.onerror = function(error) {
+            console.log("Error en WebSocket", error);
+            displayMessage("Error en la conexión");
+        };
+
+        // Notificación de cierre de conexión
+        socket.onclose = function() {
+            console.log("Conexión cerrada");
+            displayMessage("La conexión ha sido cerrada");
+        };
+
+        // Enviar mensaje al servidor cuando se envía el formulario
+        messageForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const message = messageInput.value;
+            socket.send(message); // Enviar mensaje al servidor
+            displayMessage(`Tú: ${message}`); // Mostrar mensaje en la interfaz
+            messageInput.value = ""; // Limpiar campo de entrada
+        });
+
+        // Función para mostrar mensajes en el contenedor
+        function displayMessage(message) {
+            const p = document.createElement("p");
+            p.textContent = message;
+            messageContainer.appendChild(p);
+            messageContainer.scrollTop = messageContainer.scrollHeight; // Desplazar hacia abajo
+        }
+    </script>
+</body>
+</html>
