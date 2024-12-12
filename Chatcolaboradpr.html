@@ -3,20 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Message</title>
+    <link rel="stylesheet" href="./send.css">
+    <title>Chat User</title>
 </head>
-<body>
-    <h1>Mensajes</h1>
-
-    <div id="messageContainer" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;">
-        <p><em>No hay mensajes</em></p>
+<header>
+    <div class="logo-title">
+      <img src="logo.png" class="logo" alt="Logo">
+      <h1 class="title">Go Flow</h1>
     </div>
+  
+    <nav class="nav" [class.active]="isMenuVisible">
+      <a href="/userview">Inicio</a>
+      <a href="/administratorview">Colaboradores</a>
+      <button type="button" class="btn-creat" (click)="goToNewView()">Crear</button>
+    </nav>
 
-    <!-- Formulario para enviar mensajes -->
-    <form id="messageForm">
-        <input type="text" id="messageInput" placeholder="Escribe un mensaje" required>
-        <button type="submit">Enviar</button>
-    </form>
+    <div class="logo-title">
+        <img src="perfil.png" class="logo" alt="Logo">
+      </div>
+  
+    <button class="user-icon" (click)="toggleModal()">
+      <i class="fas fa-user-circle"></i>
+    </button>
+  
+
+    
+  </header>
+  
+<body>
+   
+
+  <!-- Contenedor para mostrar mensajes -->
+  <div id="messageContainer" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;" class="container-msj">
+    <p><em>No hay mensajes aún.</em></p>
+  </div>
+
+  <!-- Formulario para enviar mensajes -->
+  <form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje" required class="campo-chat">
+    <button type="submit" class="btn-enviar">Enviar</button>
+  </form>
 
     <script>
         // Conexión WebSocket
@@ -44,10 +70,7 @@
                 });
             }
 
-            // Si es un nuevo mensaje
-            if (data.type === 'new_message') {
-                displayMessage(`Nuevo mensaje: ${data.message}`);
-            }
+            
         };
 
         // Manejar errores
@@ -81,3 +104,21 @@
     </script>
 </body>
 </html>
+
+<footer class="footer">
+    <p class="foo-1">&copy; 2024 GOFLOW. Todos los derechos reservados.</p>
+    <nav class="footer-nav">
+      <a href="#">Política de Privacidad</a>
+      <a href="#">Términos y Condiciones</a>
+      <a href="#">Contacto</a>
+      <a href="#">Manual Para usar</a>
+    </nav>
+    <div class="social-icons">
+      <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </footer>

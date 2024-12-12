@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat colaborador</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo-title">
+      <img src="logo.png" class="logo" alt="Logo">
+      <h1 class="title">Go Flow</h1>
+    </div>
+
+    <nav class="nav" id="navMenu">
+      <a href="/userview">Inicio</a>
+      <a href="/administratorview">Colaboradores</a>
+      <button type="button" class="btn-creat" onclick="goToNewView()">Crear</button>
+    </nav>
+
+    <button class="user-icon" onclick="toggleModal()">
+      <i class="fas fa-user-circle"></i>
+    </button>
+
+    <div class="logo-title">
+      <img src="perfil.png" class="logo" alt="Logo">
+    </div>
+
+    <div class="user-modal" id="userModal">
+      <button onclick="viewProfile()">Ver perfil</button>
+      <button onclick="logout()">Cerrar sesión</button>
+    </div>
+  </header>
+
+
+
+  <!-- Contenedor para mostrar mensajes -->
+  <div id="messageContainer" style="border: 1px solid #ccc; padding: 10px; height: 200px; overflow-y: auto;" class="container-msj">
+    <p><em>No hay mensajes aún.</em></p>
+  </div>
+
+  <!-- Formulario para enviar mensajes -->
+  <form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Escribe un mensaje" required class="campo-chat">
+    <button type="submit" class="btn-enviar">Enviar</button>
+  </form>
+
+  <script>
+    // Función para simular la acción de "Crear"
+    function goToNewView() {
+      alert("Ir a la vista para crear algo nuevo.");
+    }
+
+    // Función para manejar la apertura y cierre del modal
+    function toggleModal() {
+      const modal = document.getElementById("userModal");
+      modal.classList.toggle("active");
+    }
+
+    // Función para ver el perfil (simulada)
+    function viewProfile() {
+      alert("Ver perfil.");
+    }
+
+    // Función para cerrar sesión (simulada)
+    function logout() {
+      alert("Cerrar sesión.");
+    }
+
+    // Conexión WebSocket
+    const socket = new WebSocket("ws://localhost:8080");
+
+    const messageContainer = document.getElementById("messageContainer");
+    const messageForm = document.getElementById("messageForm");
+    const messageInput = document.getElementById("messageInput");
+
+    socket.onopen = function() {
+      console.log("Conectado al WebSocket");
+      displayMessage("Conectado al WebSocket");
+    };
+
+    socket.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if (data.type === 'history') {
+        messageContainer.innerHTML = '';
+        data.messages.forEach(msg => {
+          displayMessage(`${msg.message}`);
+        });
+      }
+      
+      if (data.type === 'new_message') {
+        displayMessage(`${data.message}`);
+      }
+    };
+
+    socket.onerror = function(error) {
+      console.log("Error en WebSocket:", error);
+      displayMessage("Error en la conexión.");
+    };
+
+    socket.onclose = function() {
+      console.log("Conexión cerrada.");
+      displayMessage("La conexión ha sido cerrada.");
+    };
+
+    messageForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const message = messageInput.value.trim();
+      if(message) {
+        socket.send(message);
+        displayMessage(`Tú: ${message}`);
+        messageInput.value = "";
+      }
+    });
+
+    function displayMessage(message) {
+      const p = document.createElement("p");
+      p.textContent = message;
+      messageContainer.appendChild(p);
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  </script>
+</body>
+</html>
+
+<footer class="footer">
+  <p class="foo-1">&copy; 2024 GOFLOW. Todos los derechos reservados.</p>
+  <nav class="footer-nav">
+    <a href="#">Política de Privacidad</a>
+    <a href="#">Términos y Condiciones</a>
+    <a href="#">Contacto</a>
+    <a href="#">Manual Para usar</a>
+  </nav>
+  <div class="social-icons">
+    <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+  </div>
+</footer>

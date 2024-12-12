@@ -1,0 +1,254 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header with styles and interactions */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #efefef;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  .logo-title {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      width: 50px;
+      height: auto;
+      border-radius: 5%;
+    }
+
+    .title {
+      margin-left: 15px;
+      color: black;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    margin-right: 60%;
+    gap: 20px;
+
+    a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #1364b0;
+      }
+    }
+
+    .btn-creat {
+      background-color: #1092f6;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 15px;
+      transition: transform 0.3s ease, background-color 0.3s;
+
+      &:hover {
+        background-color: #969a97;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .user-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+
+    i {
+      margin-right: 25px;
+      font-size: 30px;
+    }
+  }
+
+  .user-modal {
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+
+    &.active {
+      display: flex;
+    }
+
+    button {
+      background-color: #1092f6;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0e78c0;
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    .user-icon i {
+      font-size: 50px;
+    }
+
+    .user-modal {
+      padding: 20px;
+      gap: 15px;
+
+      button {
+        padding: 10px 25px;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .user-icon i {
+      font-size: 30px;
+    }
+
+    .user-modal {
+      padding: 12px;
+      gap: 10px;
+
+      button {
+        padding: 6px 18px;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+/* Container for messages */
+.container-msj {
+  max-width: 600px;
+  margin: 100px auto 60px auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  height: 300px;
+  overflow-y: auto;
+
+  p {
+    margin: 5px 0;
+    padding: 8px 10px;
+    background-color: #e6f0ff;
+    border-radius: 5px;
+    color: #003366;
+    word-wrap: break-word;
+
+    &.you {
+      background-color: #cce5ff;
+      text-align: right;
+    }
+  }
+}
+
+/* Footer with fixed position */
+footer {
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #dfdfdf;
+  color: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  .footer-nav {
+    a {
+      color: rgb(177, 177, 177);
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 0.9rem;
+      transition: text-decoration 0.3s ease;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .social-icons {
+    a {
+      color: white;
+      margin: 0 10px;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: #cce5ff;
+      }
+    }
+  }
+}
+
+/* Form for sending messages */
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  margin: 10px auto;
+
+  .campo-chat {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  .btn-enviar {
+    padding: 10px 15px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #004c99;
+    }
+  }
+}
